@@ -14,22 +14,25 @@
   <script>
 
     const img = document.querySelector('img');
-    window.addEventListener('onload', initialImageLoad());
+    window.addEventListener('onload', fetcher('https://api.giphy.com/v1/gifs/translate?api_key=oeJB0Gotb4c0XeFUS5cGRc9d7LoJ7n8S&s=search'));
+    let initialLink = 'https://api.giphy.com/v1/gifs/translate?api_key=oeJB0Gotb4c0XeFUS5cGRc9d7LoJ7n8S&s=search'
     let gifLink = 'https://api.giphy.com/v1/gifs/translate?api_key=oeJB0Gotb4c0XeFUS5cGRc9d7LoJ7n8S&s=';
-    let searchStr = '';
     const searchButton = document.getElementsByClassName('search-button')[0];
     searchButton.addEventListener('click', getGif)
+    
+    function fetcher (link) {
 
-    function initialImageLoad () {
-        fetch('https://api.giphy.com/v1/gifs/translate?api_key=oeJB0Gotb4c0XeFUS5cGRc9d7LoJ7n8S&s=search', {mode: 'cors'})
+        fetch(link, {mode: 'cors'})
         .then(function(response) {
         return(response.json())
         })
         .then(function(response) {
         img.src = response.data.images.original.url;
-        });
+        })
+        .catch(function(err) {console.log('Error fetching data :( ')});
+
     }
-    
+
     function getGif () { 
     (function addString() {
 
@@ -37,13 +40,7 @@
         gifLink += searchInput.value;
 
     })();
-    fetch(gifLink, {mode: 'cors'})
-    .then(function(response) {
-        return(response.json())
-    })
-    .then(function(response) {
-        img.src = response.data.images.original.url;
-    });
+    fetcher(gifLink)
 
     };
 
