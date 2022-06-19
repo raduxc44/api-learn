@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <img src="#">
+  <form method="post">
+    <label for="search">Search:</label>
+    <input id= "search" type="text">
+  </form>
+  <button class="search-button">Search</button>
+  <script>
+
+    const img = document.querySelector('img');
+    window.addEventListener('onload', initialImageLoad());
+    let gifLink = 'https://api.giphy.com/v1/gifs/translate?api_key=oeJB0Gotb4c0XeFUS5cGRc9d7LoJ7n8S&s=';
+    let searchStr = '';
+    const searchButton = document.getElementsByClassName('search-button')[0];
+    searchButton.addEventListener('click', getGif)
+
+    function initialImageLoad () {
+        fetch('https://api.giphy.com/v1/gifs/translate?api_key=oeJB0Gotb4c0XeFUS5cGRc9d7LoJ7n8S&s=search', {mode: 'cors'})
+        .then(function(response) {
+        return(response.json())
+        })
+        .then(function(response) {
+        img.src = response.data.images.original.url;
+        });
+    }
+    
+    function getGif () { 
+    (function addString() {
+
+        let searchInput = document.getElementById('search');
+        gifLink += searchInput.value;
+
+    })();
+    fetch(gifLink, {mode: 'cors'})
+    .then(function(response) {
+        return(response.json())
+    })
+    .then(function(response) {
+        img.src = response.data.images.original.url;
+    });
+
+    };
+
+  </script>
+</body>
+</html>
